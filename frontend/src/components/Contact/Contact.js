@@ -1,11 +1,13 @@
 import React from "react";
+import "./Contact.css";
 
-function Contact() {
+function Contact(props) {
   return (
-    <div>
-      <div>September 11, 2021</div>
-      <h2>Name: </h2>
-      <label>Himanshu Naidu</label>
+    <div className="contact-item">
+      <div className="contact-item__description">
+        <h2>{props.field}</h2>
+        <div className="contact-item__val">{props.value}</div>
+      </div>
     </div>
   );
 }
