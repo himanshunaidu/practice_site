@@ -4,7 +4,7 @@ const getContact = (req, res, next) => {
   res.json({ contact: "Himanshu Naidu" });
 };
 
-const saveContact = (req, res, next) => {
+const saveContact = async (req, res, next) => {
   const newContact = new Contact(
     req.body.name,
     req.body.contactBody?.mobile,
@@ -12,7 +12,8 @@ const saveContact = (req, res, next) => {
     req.body.contactBody?.email
   );
   newContact.save();
-  res.status(200).json({ status: "Success", allContacts: Contact.fetchAll() });
+  let contactData = await Contact.fetchAll();
+  res.status(200).json({ status: "Success", allContacts: contactData });
 };
 
 module.exports = { getContact: getContact, saveContact: saveContact };

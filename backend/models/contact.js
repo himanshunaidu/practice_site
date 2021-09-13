@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const pathUtil = require("../util/path");
+const contactPath = path.join(pathUtil.mainPath, "data", "contacts.json");
 
 const otherContacts = [];
 
@@ -14,25 +15,30 @@ class Contact {
   }
 
   save() {
-    const p = path.join(pathUtil.mainPath, "data", "contacts.json");
     //We use readFile then writeFile instead of appendFile, because we need to store an array
-    console.log("Adding");
-    fs.readFile(p, (err, data) => {
+    fs.readFile(contactPath, (err, data) => {
       let contacts = [];
       if (!err) {
         contacts = JSON.parse(data);
       }
       contacts.push(this);
-      console.log("Error 1?");
-      fs.writeFile(p, JSON.stringify(contacts), (err) => {
-        console.log(err);
+      fs.writeFile(contactPath, JSON.stringify(contacts), (err) => {
+        if (err) {
+          console.log("Error", err);
+        }
       });
-      console.log("Error 3?");
     });
   }
 
-  static fetchAll() {
-    return otherContacts;
+  static async fetchAll() {
+    return new Promise((resolve, reject) => {
+      fs.readFile(contactPath, (err, data) => {
+        if (err) {
+          data = [];
+        }
+        resolve(JSON.parse(data));
+      });
+    });
   }
 }
 
