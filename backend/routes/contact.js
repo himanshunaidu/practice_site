@@ -5,4 +5,6 @@ const contactController = require("../controllers/contact");
 
 router.get("/", contactController.getContact);
 
+router.post("/save", contactController.saveContact);
+
 module.exports = router;
