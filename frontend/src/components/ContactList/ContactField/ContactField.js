@@ -1,7 +1,7 @@
 import React from "react";
 
 import "./ContactField.css";
-import Card from "../UI/Card/Card";
+import Card from "../../UI/Card/Card";
 
 const ContactField = (props) => {
   return (

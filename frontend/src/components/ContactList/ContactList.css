@@ -1,0 +1,5 @@
+.contact-list {
+  background-color: silver;
+  /* em is relative to the parent font size, while rem is relative to the root font size of the HTML document */
+  padding: 1em;
+}
