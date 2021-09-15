@@ -2,7 +2,7 @@
 import "./App.css";
 import Contact from "./components/Contact/Contact";
 
-function App() {
+const App = () => {
   const contacts = [
     {
       id: "e1",
@@ -24,17 +24,9 @@ function App() {
 
   return (
     <div className="App">
-      {contacts.map((contact) => {
-        return (
-          <Contact
-            key={contact.id}
-            field={contact.field}
-            value={contact.value}
-          ></Contact>
-        );
-      })}
+      <Contact contactDetails={contacts}></Contact>
     </div>
   );
-}
+};
 
 export default App;
