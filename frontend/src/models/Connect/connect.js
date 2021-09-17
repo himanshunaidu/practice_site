@@ -7,7 +7,7 @@ class ConnectMessage {
   }
 
   inspect() {
-    //Overrides the console.log functionality
+    //Overrides the console.log functionality (maybe)
     return this.title + this.name + this.mobile + this.message;
   }
 }

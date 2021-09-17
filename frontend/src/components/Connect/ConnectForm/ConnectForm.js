@@ -43,8 +43,7 @@ const ConnectForm = (props) => {
 
   const formSubmitHandler = (event) => {
     event.preventDefault(); //This prevents the form from re-loading the page
-    const connectMessage = new ConnectMessage(title, name, mobile, message);
-    console.log(connectMessage.inspect());
+    props.sendMessage(title, name, mobile, message);
   };
 
   return (
