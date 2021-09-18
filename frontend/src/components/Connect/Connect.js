@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Connect.css";
+import styles from "./Connect.module.css";
 import ConnectForm from "./ConnectForm/ConnectForm";
 import ConnectMessage from "../../models/Connect/connect";
 
@@ -11,7 +11,7 @@ const Connect = (props) => {
 
   return (
     <div style={{ backgroundColor: "silver" }}>
-      <div className="connect">
+      <div className={styles.connect}>
         <ConnectForm sendMessage={sendMessage}></ConnectForm>
       </div>
     </div>

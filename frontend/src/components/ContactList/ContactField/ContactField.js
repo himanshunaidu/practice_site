@@ -1,14 +1,14 @@
 import React from "react";
 
-import "./ContactField.css";
+import styles from "./ContactField.module.css";
 import Card from "../../UI/Card/Card";
 
 const ContactField = (props) => {
   return (
-    <Card className="contact-item">
-      {/* <div className="contact-item__description"> */}
+    <Card className={styles["contact-item"]}>
+      {/* <div className={styles["contact-item__description"]}> */}
       <h2>{props.field}</h2>
-      <div className="contact-item__val">{props.value}</div>
+      <div className={styles["contact-item__val"]}>{props.value}</div>
       {/* </div> */}
     </Card>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./ConnectForm.css";
+import styles from "./ConnectForm.module.css";
 import ConnectMessage from "../../../models/Connect/connect";
 
 const ConnectForm = (props) => {
@@ -89,11 +89,11 @@ const ConnectForm = (props) => {
 
   return (
     <form onSubmit={formSubmitHandler}>
-      <div className="connect__controls">
-        <div className="connect__control">
+      <div className={styles.connect__controls}>
+        <div className={styles.connect__control}>
           <label>Title</label>
           <input
-            className={titleValid ? "" : "invalid"}
+            className={titleValid ? "" : styles.invalid}
             type="text"
             value={title}
             onChange={(e) => {
@@ -101,10 +101,10 @@ const ConnectForm = (props) => {
             }}
           />
         </div>
-        <div className="connect__control">
+        <div className={styles.connect__control}>
           <label>Name</label>
           <input
-            className={nameValid ? "" : "invalid"}
+            className={nameValid ? "" : styles.invalid}
             type="text"
             value={name}
             onChange={(e) => {
@@ -112,10 +112,10 @@ const ConnectForm = (props) => {
             }}
           />
         </div>
-        <div className="connect__control">
+        <div className={styles.connect__control}>
           <label>Mobile</label>
           <input
-            className={mobileValid ? "" : "invalid"}
+            className={mobileValid ? "" : styles.invalid}
             type="number"
             value={mobile}
             onChange={(e) => {
@@ -123,10 +123,10 @@ const ConnectForm = (props) => {
             }}
           />
         </div>
-        <div className="connect__control">
+        <div className={styles.connect__control}>
           <label>Message</label>
           <textarea
-            className={messageValid ? "" : "invalid"}
+            className={messageValid ? "" : styles.invalid}
             type="number"
             value={message}
             rows={4}
@@ -137,7 +137,7 @@ const ConnectForm = (props) => {
           />
         </div>
       </div>
-      <div className="connect__actions">
+      <div className={styles.connect__actions}>
         <button type="submit">Send Message</button>
       </div>
     </form>

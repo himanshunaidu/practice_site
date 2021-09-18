@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import "./ContactList.css";
+import styles from "./ContactList.module.css";
 import ContactField from "./ContactField/ContactField";
 
 const INITIAL_CONTACTS = [
@@ -26,7 +26,7 @@ const Contact = (props) => {
   const [contacts, setContacts] = useState(INITIAL_CONTACTS);
 
   return (
-    <div className="contact-list">
+    <div className={styles["contact-list"]}>
       {contacts.map((contactField) => {
         return (
           <ContactField
