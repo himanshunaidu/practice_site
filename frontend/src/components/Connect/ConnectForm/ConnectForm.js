@@ -4,9 +4,17 @@ import ConnectMessage from "../../../models/Connect/connect";
 
 const ConnectForm = (props) => {
   const [title, setTitle] = useState("");
+  const [titleValid, setTitleValid] = useState(true);
+
   const [name, setName] = useState("");
+  const [nameValid, setNameValid] = useState(true);
+
   const [mobile, setMobile] = useState(0);
+  const [mobileValid, setMobileValid] = useState(true);
+
   const [message, setMessage] = useState("");
+  const [messageValid, setMessageValid] = useState(true);
+
   const [updateCount, setUpdateCount] = useState(0);
 
   const connectFields = {
@@ -17,18 +25,31 @@ const ConnectForm = (props) => {
   };
 
   const fieldChangeHandler = (field, event) => {
-    console.log("Field Changed", event.target.value);
+    let value = event.target.value.trim();
+
     switch (field) {
       case connectFields.title:
+        if (value.length > 0) {
+          setTitleValid(true);
+        }
         setTitle(event.target.value);
         break;
       case connectFields.name:
+        if (value.length > 0) {
+          setNameValid(true);
+        }
         setName(event.target.value);
         break;
       case connectFields.mobile:
-        setMobile(event.target.value);
+        if (value.length === 10) {
+          setMobileValid(true);
+        }
+        setMobile(parseInt(event.target.value));
         break;
       case connectFields.message:
+        if (value.length > 0) {
+          setMessageValid(true);
+        }
         setMessage(event.target.value);
         break;
       default:
@@ -43,7 +64,27 @@ const ConnectForm = (props) => {
 
   const formSubmitHandler = (event) => {
     event.preventDefault(); //This prevents the form from re-loading the page
-    props.sendMessage(title, name, mobile, message);
+    let sendFlag = true;
+    if (title.trim().length === 0) {
+      setTitleValid(false);
+      sendFlag = false;
+    }
+    if (name.trim().length === 0) {
+      setNameValid(false);
+      sendFlag = false;
+    }
+    if (Math.floor(Math.log10(mobile)) + 1 != 10) {
+      setMobileValid(false);
+      sendFlag = false;
+    }
+    if (message.trim().length === 0) {
+      setMessageValid(false);
+      sendFlag = false;
+    }
+
+    if (sendFlag) {
+      props.sendMessage(title, name, mobile, message);
+    }
   };
 
   return (
@@ -52,6 +93,7 @@ const ConnectForm = (props) => {
         <div className="connect__control">
           <label>Title</label>
           <input
+            className={titleValid ? "" : "invalid"}
             type="text"
             value={title}
             onChange={(e) => {
@@ -62,6 +104,7 @@ const ConnectForm = (props) => {
         <div className="connect__control">
           <label>Name</label>
           <input
+            className={nameValid ? "" : "invalid"}
             type="text"
             value={name}
             onChange={(e) => {
@@ -72,6 +115,7 @@ const ConnectForm = (props) => {
         <div className="connect__control">
           <label>Mobile</label>
           <input
+            className={mobileValid ? "" : "invalid"}
             type="number"
             value={mobile}
             onChange={(e) => {
@@ -82,6 +126,7 @@ const ConnectForm = (props) => {
         <div className="connect__control">
           <label>Message</label>
           <textarea
+            className={messageValid ? "" : "invalid"}
             type="number"
             value={message}
             rows={4}

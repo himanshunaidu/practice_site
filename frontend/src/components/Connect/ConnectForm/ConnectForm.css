@@ -24,3 +24,17 @@
 .connect__actions {
   text-align: right;
 }
+
+.connect__control textarea {
+  font: inherit;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 20rem;
+  max-width: 100%;
+}
+
+.invalid {
+  border-color: red;
+  background-color: #ffaaaa;
+}
