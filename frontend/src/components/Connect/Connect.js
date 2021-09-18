@@ -10,11 +10,11 @@ const Connect = (props) => {
   };
 
   return (
-    <div style={{ backgroundColor: "silver" }}>
+    <React.Fragment>
       <div className={styles.connect}>
         <ConnectForm sendMessage={sendMessage}></ConnectForm>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 
