@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import styles from "./ConnectForm.module.css";
 import ConnectMessage from "../../../models/Connect/connect";
+
+import Button from "../../UI/Button/Button";
+import styles from "./ConnectForm.module.css";
 
 const ConnectForm = (props) => {
   const [title, setTitle] = useState("");
@@ -138,7 +140,8 @@ const ConnectForm = (props) => {
         </div>
       </div>
       <div className={styles.connect__actions}>
-        <button type="submit">Send Message</button>
+        {/* <button type="submit">Send Message</button> */}
+        <Button type="submit">Send Message</Button>
       </div>
     </form>
   );
