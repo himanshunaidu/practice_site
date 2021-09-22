@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ConnectMessage from "../../../models/Connect/connect";
 
 import ErrorModal from "../../UI/ErrorModal/ErrorModal";
@@ -14,22 +14,23 @@ const initialErrorState = {
 const ConnectForm = (props) => {
   //State Variables
   const [title, setTitle] = useState("");
-  const [titleValid, setTitleValid] = useState(false);
+  const [titleValid, setTitleValid] = useState(true);
 
   const [name, setName] = useState("");
-  const [nameValid, setNameValid] = useState(false);
+  const [nameValid, setNameValid] = useState(true);
 
   const [mobile, setMobile] = useState(0);
-  const [mobileValid, setMobileValid] = useState(false);
+  const [mobileValid, setMobileValid] = useState(true);
 
   const [message, setMessage] = useState("");
-  const [messageValid, setMessageValid] = useState(false);
+  const [messageValid, setMessageValid] = useState(true);
 
   const [formValid, setFormValid] = useState(false);
 
   const [errorState, setErrorState] = useState(initialErrorState);
+  const [updateCount, setUpdateCount] = useState(0);
 
-  //Enum (Not useful anymore)
+  //Enum
   const connectFields = {
     title: 1,
     name: 2,
@@ -37,31 +38,66 @@ const ConnectForm = (props) => {
     message: 4,
   };
 
-  //Validation useEffect
-  useEffect(() => {
-    const debouncer = setTimeout(() => {
-      let titleValidLoc = title.trim().length === 0;
-      let nameValidLoc = name.trim().length === 0;
-      let mobileValidLoc = Math.floor(Math.log10(mobile)) + 1 !== 10;
-      let messageValidLoc = message.trim().length === 0;
+  //Handlers
+  const fieldChangeHandler = (field, event) => {
+    let value = event.target.value.trim();
 
-      setTitleValid(!titleValidLoc);
-      setNameValid(!nameValidLoc);
-      setMobileValid(!mobileValidLoc);
-      setMessageValid(!messageValidLoc);
-
-      setFormValid(
-        !(titleValidLoc || nameValidLoc || mobileValidLoc || messageValidLoc)
-      );
-    }, 500);
-    return () => {
-      clearTimeout(debouncer);
-    };
-  }, [title, name, mobile, message]);
+    switch (field) {
+      case connectFields.title:
+        if (value.length > 0) {
+          setTitleValid(true);
+        }
+        setTitle(event.target.value);
+        break;
+      case connectFields.name:
+        if (value.length > 0) {
+          setNameValid(true);
+        }
+        setName(event.target.value);
+        break;
+      case connectFields.mobile:
+        if (value.length === 10) {
+          setMobileValid(true);
+        }
+        setMobile(parseInt(event.target.value));
+        break;
+      case connectFields.message:
+        if (value.length > 0) {
+          setMessageValid(true);
+        }
+        setMessage(event.target.value);
+        break;
+      default:
+        console.log("Incorrect Field Update");
+    }
+    setUpdateCount((prevCount) => {
+      //Always pass a callback when you depend on the previous state,
+      //since the process is asynchronous, and direct updates might end up depending on outdated state values.
+      return prevCount + 1;
+    });
+  };
 
   const formSubmitHandler = (event) => {
     event.preventDefault(); //This prevents the form from re-loading the page
-    if (formValid) {
+    let sendFlag = true;
+    if (title.trim().length === 0) {
+      setTitleValid(false);
+      sendFlag = false;
+    }
+    if (name.trim().length === 0) {
+      setNameValid(false);
+      sendFlag = false;
+    }
+    if (Math.floor(Math.log10(mobile)) + 1 !== 10) {
+      setMobileValid(false);
+      sendFlag = false;
+    }
+    if (message.trim().length === 0) {
+      setMessageValid(false);
+      sendFlag = false;
+    }
+
+    if (sendFlag) {
       props.sendMessage(title, name, mobile, message);
       //Reset
       setTitle("");
@@ -69,10 +105,9 @@ const ConnectForm = (props) => {
       setMobile(0);
       setMessage("");
     } else {
-      //Since we have now added useEffect validation that disables the button, this is just a fail-safe now
       setErrorState({
         show: true,
-        title: "Unexpected Error Occurred",
+        title: "Invalid Input",
         message: "Please Enter Valid Input",
       });
     }
