@@ -1,5 +1,9 @@
+let counter = 0;
+
 class ConnectMessage {
   constructor(title, name, mobile, message) {
+    counter += 1;
+    this.id = counter;
     this.title = title;
     this.name = name;
     this.mobile = mobile;

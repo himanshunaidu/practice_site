@@ -86,7 +86,7 @@ const ConnectForm = (props) => {
       setNameValid(false);
       sendFlag = false;
     }
-    if (Math.floor(Math.log10(mobile)) + 1 != 10) {
+    if (Math.floor(Math.log10(mobile)) + 1 !== 10) {
       setMobileValid(false);
       sendFlag = false;
     }
@@ -97,6 +97,11 @@ const ConnectForm = (props) => {
 
     if (sendFlag) {
       props.sendMessage(title, name, mobile, message);
+      //Reset
+      setTitle("");
+      setName("");
+      setMobile(0);
+      setMessage("");
     } else {
       setErrorState({
         show: true,
