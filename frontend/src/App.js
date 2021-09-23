@@ -1,16 +1,34 @@
 // import logo from "./logo.svg";
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
-import Contact from "./components/ContactList/ContactList";
+import ContactList from "./components/ContactList/ContactList";
 import Connect from "./components/Connect/Connect";
+import ContactContext from "./store/contact-context";
+import { INITIAL_CONTACTS } from "./store/contact-context";
 
 const App = () => {
-  console.log(React.version);
+  const [contacts, setContacts] = useState(INITIAL_CONTACTS);
+
+  const changeContacts = (id) => {
+    console.log("Changing");
+    setContacts((cs) => {
+      cs.forEach((c) => {
+        if (c.id === id) {
+          c.value = "Hello";
+        }
+      });
+      return [...cs];
+    });
+  };
 
   return (
     <div className="App">
-      <Connect></Connect>
-      <Contact></Contact>
+      <ContactContext.Provider
+        value={{ contacts: contacts, changeContacts: changeContacts }}
+      >
+        <Connect></Connect>
+        <ContactList></ContactList>
+      </ContactContext.Provider>
     </div>
   );
 };

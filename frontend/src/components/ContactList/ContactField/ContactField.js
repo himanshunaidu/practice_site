@@ -8,7 +8,9 @@ const ContactField = (props) => {
     <Card className={styles["contact-item"]}>
       {/* <div className={styles["contact-item__description"]}> */}
       <h2>{props.field}</h2>
-      <div className={styles["contact-item__val"]}>{props.value}</div>
+      <div className={styles["contact-item__val"]} onClick={props.onClick}>
+        {props.value}
+      </div>
       {/* </div> */}
     </Card>
   );

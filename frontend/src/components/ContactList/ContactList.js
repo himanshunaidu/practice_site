@@ -1,38 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import styles from "./ContactList.module.css";
 import ContactField from "./ContactField/ContactField";
-
-const INITIAL_CONTACTS = [
-  {
-    id: "e1",
-    field: "Name",
-    value: "Himanshu Naidu",
-    date: new Date(2020, 7, 14),
-  },
-  {
-    id: "e2",
-    field: "Mobile No.",
-    value: 9999999999,
-  },
-  {
-    id: "e3",
-    field: "DOB",
-    value: new Date(1997, 0, 1).toLocaleString(),
-  },
-];
+import ContactContext from "../../store/contact-context";
 
 const Contact = (props) => {
-  const [contacts, setContacts] = useState(INITIAL_CONTACTS);
+  // const [contacts, setContacts] = useState(INITIAL_CONTACTS);
+  const ctx = useContext(ContactContext);
 
   return (
     <div className={styles["contact-list"]}>
-      {contacts.map((contactField) => {
+      {ctx.contacts.map((contactField) => {
         return (
           <ContactField
             key={contactField.id} //key will be a unique identifier. Do not use index of array element as that can change
             field={contactField.field}
             value={contactField.value}
+            onClick={() => ctx.changeContacts(contactField.id)}
           ></ContactField>
         );
       })}

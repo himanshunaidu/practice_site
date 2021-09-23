@@ -7,8 +7,10 @@ import ConnectMessage from "../../models/Connect/connect";
 const INITIAL_MESSAGES = [];
 
 const Connect = (props) => {
+  console.log("Updating Connect");
   const [connects, setConnects] = useState(INITIAL_MESSAGES);
 
+  //Thought experiment to check efficacy of React.memo. To see if Connect changes if contacts list changes
   const sendMessage = (title, name, mobile, message) => {
     const connectMessage = new ConnectMessage(title, name, mobile, message);
     setConnects((prevConnects) => {
@@ -28,4 +30,4 @@ const Connect = (props) => {
   );
 };
 
-export default Connect;
+export default React.memo(Connect); //memoizes the component so that it only re-executes if a prop changes
