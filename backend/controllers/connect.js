@@ -6,10 +6,10 @@ const getConnect = (req, res, next) => {
 
 const saveConnect = (req, res, next) => {
   const newConnect = new Connect(
-    req.body.name,
+    req.body.connectBody?.name,
+    req.body.connectBody?.title,
     req.body.connectBody?.mobile,
-    req.body.connectBody?.dob,
-    req.body.connectBody?.email
+    req.body.connectBody?.message
   );
   newConnect.save().then(async (connects) => {
     // let connectData = await Connect.fetchAllPromise();
