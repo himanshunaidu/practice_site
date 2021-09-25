@@ -1,38 +1,41 @@
 const fs = require("fs");
 const path = require("path");
+const uuid = require("uuid");
 
 const pathUtil = require("../util/path");
 
 //Helper Function
-const contactPath = path.join(pathUtil.mainPath, "data", "contacts.json");
+const connectPath = path.join(pathUtil.mainPath, "data", "connects.json");
 const readPromiseHelper = (callback) => {
-  fs.readFile(contactPath, (err, contacts) => {
+  fs.readFile(connectPath, (err, connects) => {
     if (err) {
       callback([]);
     } else {
-      callback(JSON.parse(contacts));
+      callback(JSON.parse(connects));
     }
   });
 };
 
-class Contact {
-  constructor(name, mobile, dob, email) {
+class Connect {
+  constructor(title, name, mobile, message) {
+    this.id = uuid.v4();
+    this.title = title;
     this.name = name;
     this.mobile = mobile;
-    this.dob = dob;
-    this.email = email;
+    this.message = message;
+    this.date = Date.now();
   }
 
   save() {
     //We use readFile then writeFile instead of appendFile, because we need to store an array
     return new Promise((resolve, reject) => {
-      readPromiseHelper((contacts) => {
-        contacts.push(this);
-        fs.writeFile(contactPath, JSON.stringify(contacts), (err) => {
+      readPromiseHelper((connects) => {
+        connects.push(this);
+        fs.writeFile(connectPath, JSON.stringify(connects), (err) => {
           if (err) {
             console.log("Error", err);
           }
-          resolve(contacts);
+          resolve(connects);
         });
       });
     });
@@ -40,11 +43,11 @@ class Contact {
 
   static async fetchAllPromise() {
     return new Promise((resolve, reject) => {
-      readPromiseHelper((contacts) => {
-        resolve(contacts);
+      readPromiseHelper((connects) => {
+        resolve(connects);
       });
     });
   }
 }
 
-module.exports = Contact;
+module.exports = Connect;

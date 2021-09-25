@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const homeRouter = require("./routes/home");
-const contactRouter = require("./routes/contact");
+const connectRouter = require("./routes/connect");
 const errorRouter = require("./routes/error");
 
 const app = express();
@@ -23,7 +23,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/contact", contactRouter);
+app.use("/connect", connectRouter);
 app.use("/", homeRouter);
 app.use(errorRouter);
 
