@@ -34,8 +34,9 @@ class Connect {
         fs.writeFile(connectPath, JSON.stringify(connects), (err) => {
           if (err) {
             console.log("Error", err);
+            reject("Error");
           }
-          resolve(connects);
+          resolve(connects.length);
         });
       });
     });

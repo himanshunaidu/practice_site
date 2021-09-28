@@ -63,7 +63,7 @@ const ConnectForm = (props) => {
       setNameValid(!nameValidLoc);
       setMobileValid(!mobileValidLoc);
       setMessageValid(!messageValidLoc);
-      console.log(titleState);
+      // console.log(titleState);
 
       setFormValid(
         !(
