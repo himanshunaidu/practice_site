@@ -49,6 +49,18 @@ class Connect {
       });
     });
   }
+
+  static async fetchByIdPromise(id) {
+    return new Promise((resolve, reject) => {
+      readPromiseHelper((connects) => {
+        const connect = connects.find((c) => c.id === id);
+        if (connect) {
+          resolve(connect);
+        }
+        reject("Connect Message not found");
+      });
+    });
+  }
 }
 
 module.exports = Connect;

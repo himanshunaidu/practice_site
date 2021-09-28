@@ -10,10 +10,13 @@ const INITIAL_MESSAGES = [];
 
 const Connect = (props) => {
   const [connects, setConnects] = useState(INITIAL_MESSAGES);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getConnectMessages = useCallback(() => {
+    setIsLoading(true);
     axios.get("/connect").then((result) => {
       setConnects(result.data.connects);
+      setIsLoading(false);
     });
   });
 
@@ -42,7 +45,11 @@ const Connect = (props) => {
       <div className={styles.connect}>
         <ConnectForm sendMessage={sendMessage}></ConnectForm>
         <hr></hr>
-        <ConnectList connects={connects}></ConnectList>
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <ConnectList connects={connects}></ConnectList>
+        )}
       </div>
     </React.Fragment>
   );

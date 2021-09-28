@@ -1,10 +1,20 @@
 const Connect = require("../models/connect");
 
-const getConnect = (req, res, next) => {
+const getConnects = (req, res, next) => {
   // res.json({ connect: "Himanshu Naidu" });
   Connect.fetchAllPromise().then((connects) => {
     res.status(200).json({ connects: connects });
   });
+};
+
+const getConnect = (req, res, next) => {
+  Connect.fetchByIdPromise(req.params.connectId)
+    .then((connect) => {
+      res.status(200).json({ connect: connect });
+    })
+    .catch((err) => {
+      res.status(400).json({ error: err });
+    });
 };
 
 const saveConnect = (req, res, next) => {
@@ -25,10 +35,14 @@ const saveConnect = (req, res, next) => {
       });
     })
     .catch((err) => {
-      res.status(400).json({
+      res.status(500).json({
         status: "Failure",
       });
     });
 };
 
-module.exports = { getConnect: getConnect, saveConnect: saveConnect };
+module.exports = {
+  getConnects: getConnects,
+  getConnect: getConnect,
+  saveConnect: saveConnect,
+};
