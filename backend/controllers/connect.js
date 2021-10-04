@@ -20,8 +20,8 @@ const getConnect = (req, res, next) => {
 const saveConnect = (req, res, next) => {
   console.log(req.body);
   const newConnect = new Connect(
-    req.body.connectBody?.name,
     req.body.connectBody?.title,
+    req.body.connectBody?.name,
     req.body.connectBody?.mobile,
     req.body.connectBody?.message
   );
