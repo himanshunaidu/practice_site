@@ -1,20 +1,6 @@
-const fs = require("fs");
-const path = require("path");
 const uuid = require("uuid");
 
-const pathUtil = require("../util/path");
-
-//Helper Function
-const connectPath = path.join(pathUtil.mainPath, "data", "connects.json");
-const readPromiseHelper = (callback) => {
-  fs.readFile(connectPath, (err, connects) => {
-    if (err) {
-      callback([]);
-    } else {
-      callback(JSON.parse(connects));
-    }
-  });
-};
+const dbUtil = require("../util/database");
 
 class Connect {
   constructor(title, name, mobile, message) {
@@ -27,39 +13,30 @@ class Connect {
   }
 
   save() {
-    //We use readFile then writeFile instead of appendFile, because we need to store an array
-    return new Promise((resolve, reject) => {
-      readPromiseHelper((connects) => {
-        connects.push(this);
-        fs.writeFile(connectPath, JSON.stringify(connects), (err) => {
-          if (err) {
-            console.log("Error", err);
-            reject("Error");
-          }
-          resolve(connects.length);
-        });
-      });
-    });
+    return dbUtil.execute(`insert into connect(id, title, name, mobile, date, message) 
+    values('${this.id}', '${this.title}', '${this.name}', '${this.mobile}', from_unixtime(${this.date}), '${this.message}')`);
   }
 
   static async fetchAllPromise() {
-    return new Promise((resolve, reject) => {
-      readPromiseHelper((connects) => {
-        resolve(connects);
+    return dbUtil
+      .execute(`Select * from connect;`)
+      .then((result) => {
+        return result[0];
+      })
+      .catch((err) => {
+        return Promise.reject("Error retrieving messages");
       });
-    });
   }
 
   static async fetchByIdPromise(id) {
-    return new Promise((resolve, reject) => {
-      readPromiseHelper((connects) => {
-        const connect = connects.find((c) => c.id === id);
-        if (connect) {
-          resolve(connect);
-        }
-        reject("Connect Message not found");
+    return dbUtil
+      .execute(`Select * from connect where id='${id}'`)
+      .then((result) => {
+        return result[0];
+      })
+      .catch((err) => {
+        return Promise.reject("Error retrieving message");
       });
-    });
   }
 }
 

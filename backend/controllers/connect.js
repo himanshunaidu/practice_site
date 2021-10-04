@@ -2,9 +2,13 @@ const Connect = require("../models/connect");
 
 const getConnects = (req, res, next) => {
   // res.json({ connect: "Himanshu Naidu" });
-  Connect.fetchAllPromise().then((connects) => {
-    res.status(200).json({ connects: connects });
-  });
+  Connect.fetchAllPromise()
+    .then((connects) => {
+      res.status(200).json({ connects: connects });
+    })
+    .catch((err) => {
+      res.status(400).json({ error: err });
+    });
 };
 
 const getConnect = (req, res, next) => {
@@ -27,9 +31,8 @@ const saveConnect = (req, res, next) => {
   );
   newConnect
     .save()
-    .then((connects) => {
-      // let connectData = await Connect.fetchAllPromise();
-      console.log(connects);
+    .then((result) => {
+      console.log(result);
       res.status(200).json({
         status: "Success",
       });
