@@ -83,12 +83,17 @@ const ConnectForm = (props) => {
   const formSubmitHandler = (event) => {
     event.preventDefault(); //This prevents the form from re-loading the page
     if (formValid) {
-      props.sendMessage(titleState.value, name, mobile, message);
+      props.sendMessage(
+        titleState.value,
+        nameState.value,
+        mobileState.value,
+        message
+      );
       //Reset
       // setTitle("");
       dispatchTitle({ type: inputActions.default });
-      setName("");
-      setMobile(0);
+      dispatchName({ type: inputActions.default });
+      dispatchMobile({ type: inputActions.default });
       setMessage("");
     } else {
       //Since we have now added useEffect validation that disables the button, this is just a fail-safe now
@@ -132,30 +137,35 @@ const ConnectForm = (props) => {
           <div className={styles.connect__control}>
             <label>Name</label>
             <input
-              className={nameValid ? "" : styles.invalid}
+              className={nameState.isValid ? "" : styles.invalid}
               type="text"
-              value={name}
+              value={nameState.value}
               onChange={(e) => {
-                setName(e.target.value);
+                dispatchName({
+                  type: inputActions.userInput,
+                  val: e.target.value,
+                });
               }}
             />
           </div>
           <div className={styles.connect__control}>
             <label>Mobile</label>
             <input
-              className={mobileValid ? "" : styles.invalid}
+              className={mobileState.isValid ? "" : styles.invalid}
               type="number"
-              value={mobile}
+              value={mobileState.value}
               onChange={(e) => {
-                setMobile(e.target.value);
+                dispatchMobile({
+                  type: inputActions.userInput,
+                  val: e.target.value,
+                });
               }}
             />
           </div>
           <div className={styles.connect__control}>
             <label>Message</label>
             <textarea
-              className={messageValid ? "" : styles.invalid}
-              type="number"
+              // className={messageValid ? "" : styles.invalid}
               value={message}
               rows={4}
               cols={50}
