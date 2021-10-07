@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer } from "react";
+import React, { useEffect, useState, useReducer, useCallback } from "react";
 import ConnectMessage from "../../../models/Connect/connect";
 
 import ErrorModal from "../../UI/ErrorModal/ErrorModal";
@@ -20,23 +20,35 @@ const inputActions = {
 
 const titleReducer = (state, action) => {
   if (action.type === inputActions.userInput) {
-    return { value: action.val, isValid: action.val.trim().length !== 0 };
+    return {
+      value: action.val,
+      isValid: action.val.trim().length !== 0,
+      isTouched: true,
+    };
   }
-  return { value: "", isValid: false };
+  return { value: "", isValid: false, isTouched: false };
 };
 
 const nameReducer = (state, action) => {
   if (action.type === inputActions.userInput) {
-    return { value: action.val, isValid: action.val.trim().length !== 0 };
+    return {
+      value: action.val,
+      isValid: action.val.trim().length !== 0,
+      isTouched: true,
+    };
   }
-  return { value: "", isValid: false };
+  return { value: "", isValid: false, isTouched: false };
 };
 
 const mobileReducer = (state, action) => {
   if (action.type === inputActions.userInput) {
-    return { value: action.val, isValid: action.val.length === 10 };
+    return {
+      value: action.val,
+      isValid: action.val.length === 10,
+      isTouched: true,
+    };
   }
-  return { value: "", isValid: false };
+  return { value: "", isValid: false, isTouched: false };
 };
 
 const ConnectForm = (props) => {
@@ -48,37 +60,30 @@ const ConnectForm = (props) => {
   const [titleState, dispatchTitle] = useReducer(titleReducer, {
     value: "",
     isValid: false,
+    isTouched: false,
   });
 
   const [nameState, dispatchName] = useReducer(nameReducer, {
     value: "",
     isValid: false,
+    isTouched: false,
   });
 
   const [mobileState, dispatchMobile] = useReducer(mobileReducer, {
     value: "",
     isValid: false,
+    isTouched: false,
   });
 
   //Message can be zero-length
   const [message, setMessage] = useState("");
   // const [messageValid, setMessageValid] = useState(false);
 
-  const [formValid, setFormValid] = useState(false);
+  // const [formValid, setFormValid] = useState(false);
+  let formValid =
+    titleState.isValid && nameState.isValid && mobileState.isValid;
 
   const [errorState, setErrorState] = useState(initialErrorState);
-
-  //Validation useEffect
-  useEffect(() => {
-    const debouncer = setTimeout(() => {
-      setFormValid(
-        titleState.isValid && nameState.isValid && mobileState.isValid
-      );
-    }, 500);
-    return () => {
-      clearTimeout(debouncer);
-    };
-  }, [titleState.isValid, nameState.isValid, mobileState.isValid]);
 
   const formSubmitHandler = (event) => {
     event.preventDefault(); //This prevents the form from re-loading the page
@@ -123,7 +128,11 @@ const ConnectForm = (props) => {
           <div className={styles.connect__control}>
             <label>Title</label>
             <input
-              className={titleState.isValid ? "" : styles.invalid}
+              className={
+                !titleState.isValid && titleState.isTouched
+                  ? styles.invalid
+                  : ""
+              }
               type="text"
               value={titleState.value}
               onChange={(e) => {
@@ -137,7 +146,9 @@ const ConnectForm = (props) => {
           <div className={styles.connect__control}>
             <label>Name</label>
             <input
-              className={nameState.isValid ? "" : styles.invalid}
+              className={
+                !nameState.isValid && nameState.isTouched ? styles.invalid : ""
+              }
               type="text"
               value={nameState.value}
               onChange={(e) => {
@@ -151,7 +162,11 @@ const ConnectForm = (props) => {
           <div className={styles.connect__control}>
             <label>Mobile</label>
             <input
-              className={mobileState.isValid ? "" : styles.invalid}
+              className={
+                !mobileState.isValid && mobileState.isTouched
+                  ? styles.invalid
+                  : ""
+              }
               type="number"
               value={mobileState.value}
               onChange={(e) => {
