@@ -18,7 +18,7 @@ const Connect = (props) => {
       setConnects(result.data.connects);
       setIsLoading(false);
     });
-  });
+  }, []);
 
   useEffect(() => {
     getConnectMessages();

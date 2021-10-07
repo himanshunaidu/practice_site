@@ -13,16 +13,28 @@ const initialErrorState = {
 
 //Reducer for the title state. Can be defined outside the component as it does not depend on the component
 //Enum
-const titleActions = {
+const inputActions = {
   userInput: "USER_INPUT",
   default: "DEFAULT",
-  mobile: 3,
-  message: 4,
 };
 
 const titleReducer = (state, action) => {
-  if (action.type === titleActions.userInput) {
+  if (action.type === inputActions.userInput) {
     return { value: action.val, isValid: action.val.trim().length !== 0 };
+  }
+  return { value: "", isValid: false };
+};
+
+const nameReducer = (state, action) => {
+  if (action.type === inputActions.userInput) {
+    return { value: action.val, isValid: action.val.trim().length !== 0 };
+  }
+  return { value: "", isValid: false };
+};
+
+const mobileReducer = (state, action) => {
+  if (action.type === inputActions.userInput) {
+    return { value: action.val, isValid: action.val.length === 10 };
   }
   return { value: "", isValid: false };
 };
@@ -38,14 +50,19 @@ const ConnectForm = (props) => {
     isValid: false,
   });
 
-  const [name, setName] = useState("");
-  const [nameValid, setNameValid] = useState(false);
+  const [nameState, dispatchName] = useReducer(nameReducer, {
+    value: "",
+    isValid: false,
+  });
 
-  const [mobile, setMobile] = useState(0);
-  const [mobileValid, setMobileValid] = useState(false);
+  const [mobileState, dispatchMobile] = useReducer(mobileReducer, {
+    value: "",
+    isValid: false,
+  });
 
+  //Message can be zero-length
   const [message, setMessage] = useState("");
-  const [messageValid, setMessageValid] = useState(false);
+  // const [messageValid, setMessageValid] = useState(false);
 
   const [formValid, setFormValid] = useState(false);
 
@@ -54,30 +71,14 @@ const ConnectForm = (props) => {
   //Validation useEffect
   useEffect(() => {
     const debouncer = setTimeout(() => {
-      // let titleValidLoc = titleState.value.trim().length === 0;
-      let nameValidLoc = name.trim().length === 0;
-      let mobileValidLoc = Math.floor(Math.log10(mobile)) + 1 !== 10;
-      let messageValidLoc = message.trim().length === 0;
-
-      // setTitleValid(!titleValidLoc);
-      setNameValid(!nameValidLoc);
-      setMobileValid(!mobileValidLoc);
-      setMessageValid(!messageValidLoc);
-      // console.log(titleState);
-
       setFormValid(
-        !(
-          !titleState.isValid ||
-          nameValidLoc ||
-          mobileValidLoc ||
-          messageValidLoc
-        )
+        titleState.isValid && nameState.isValid && mobileState.isValid
       );
     }, 500);
     return () => {
       clearTimeout(debouncer);
     };
-  }, [titleState.isValid, name, mobile, message]);
+  }, [titleState.isValid, nameState.isValid, mobileState.isValid]);
 
   const formSubmitHandler = (event) => {
     event.preventDefault(); //This prevents the form from re-loading the page
@@ -85,7 +86,7 @@ const ConnectForm = (props) => {
       props.sendMessage(titleState.value, name, mobile, message);
       //Reset
       // setTitle("");
-      dispatchTitle({ type: titleActions.default });
+      dispatchTitle({ type: inputActions.default });
       setName("");
       setMobile(0);
       setMessage("");
@@ -107,8 +108,8 @@ const ConnectForm = (props) => {
     <React.Fragment>
       {errorState.show ? (
         <ErrorModal
-          title={"Invalid Input"}
-          message={"Please Enter valid input"}
+          title={errorState.title}
+          message={errorState.message}
           onConfirm={errorConfirmHandler}
         ></ErrorModal>
       ) : null}
@@ -122,7 +123,7 @@ const ConnectForm = (props) => {
               value={titleState.value}
               onChange={(e) => {
                 dispatchTitle({
-                  type: titleActions.userInput,
+                  type: inputActions.userInput,
                   val: e.target.value,
                 });
               }}
