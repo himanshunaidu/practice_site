@@ -1,5 +1,5 @@
 import { createStore } from "redux";
-import * as actionTypes from "./actions/actionTypes";
+import * as actionTypes from "./actions/index";
 
 const rootReducer = (state = { counter: 0 }, action) => {
   switch (action.type) {

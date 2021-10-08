@@ -1,13 +1,31 @@
 // import logo from "./logo.svg";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import "./App.css";
 import ContactList from "./components/ContactList/ContactList";
 import Connect from "./components/Connect/Connect";
 import ContactContext from "./store/contact-context";
 import { INITIAL_CONTACTS } from "./store/contact-context";
+import * as actionTypes from "./store/actions/index";
 
 const App = () => {
   const [contacts, setContacts] = useState(INITIAL_CONTACTS);
+
+  //Redux
+  const counter = useSelector((state) => {
+    return state.counter;
+  });
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const increment = setInterval(() => {
+      dispatch({ type: actionTypes.checkCounter });
+    }, 1000);
+    return () => {
+      clearTimeout(increment);
+    };
+  }, [counter]);
 
   const changeContacts = (id) => {
     console.log("Changing");
