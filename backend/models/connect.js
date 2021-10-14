@@ -14,7 +14,7 @@ class Connect {
 
   save() {
     return dbUtil.execute(`insert into connect(id, title, name, mobile, date, message) 
-    values('${this.id}', '${this.title}', '${this.name}', '${this.mobile}', from_unixtime(${this.date}), '${this.message}')`);
+    values('${this.id}', '${this.title}', '${this.name}', '${this.mobile}', from_unixtime(${Math.floor(this.date/1000)}), '${this.message}')`);
   }
 
   static async fetchAllPromise() {

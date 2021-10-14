@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 
 import styles from "./Connect.module.css";
-import ConnectForm from "./ConnectForm/ConnectForm";
-import ConnectList from "./ConnectList/ConnectList";
+import ConnectForm from "../../components/Connect/ConnectForm/ConnectForm";
+import ConnectList from "../../components/Connect/ConnectList/ConnectList";
 import ConnectMessage from "../../models/Connect/connect";
 import axios from "../../axios";
 

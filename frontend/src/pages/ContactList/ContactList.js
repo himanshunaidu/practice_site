@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 
 import styles from "./ContactList.module.css";
-import ContactField from "./ContactField/ContactField";
+import ContactField from "../../components/ContactList/ContactField/ContactField";
 import ContactContext from "../../store/contact-context";
 
 const Contact = (props) => {
