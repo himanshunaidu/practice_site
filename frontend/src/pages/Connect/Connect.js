@@ -22,23 +22,26 @@ const Connect = (props) => {
 
   useEffect(() => {
     getConnectMessages();
-  }, []);
+  }, [getConnectMessages]);
 
   //Thought experiment to check efficacy of React.memo. To see if Connect changes if contacts list changes
-  const sendMessage = useCallback((title, name, mobile, message) => {
-    const connectMessage = new ConnectMessage(title, name, mobile, message);
-    axios
-      .post("/connect/save", { connectBody: connectMessage })
-      .then((result) => {
-        if (result.data.status === "Success") {
-          console.log("Success");
-          getConnectMessages();
-        }
-      })
-      .catch(() => {
-        console.log("Error Inserting the Message");
-      });
-  }, []);
+  const sendMessage = useCallback(
+    (title, name, mobile, message) => {
+      const connectMessage = new ConnectMessage(title, name, mobile, message);
+      axios
+        .post("/connect/save", { connectBody: connectMessage })
+        .then((result) => {
+          if (result.data.status === "Success") {
+            console.log("Success");
+            getConnectMessages();
+          }
+        })
+        .catch(() => {
+          console.log("Error Inserting the Message");
+        });
+    },
+    [getConnectMessages]
+  );
 
   return (
     <React.Fragment>

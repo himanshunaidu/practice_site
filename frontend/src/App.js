@@ -1,6 +1,7 @@
 // import logo from "./logo.svg";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Route, Redirect, Switch } from "react-router-dom";
 
 import "./App.css";
 import ContactList from "./pages/ContactList/ContactList";
@@ -44,8 +45,17 @@ const App = () => {
       <ContactContext.Provider
         value={{ contacts: contacts, changeContacts: changeContacts }}
       >
-        <Connect></Connect>
-        <ContactList></ContactList>
+        <Switch>
+          <Route path="/" exact>
+            <Redirect to="/connect"></Redirect>
+          </Route>
+          <Route path="/connect">
+            <Connect></Connect>
+          </Route>
+          <Route path="/contacts">
+            <ContactList></ContactList>
+          </Route>
+        </Switch>
       </ContactContext.Provider>
     </div>
   );
