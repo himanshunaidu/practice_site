@@ -10,6 +10,7 @@ import Connect from "./pages/Connect/Connect";
 import ContactContext from "./store/contact-context";
 import { INITIAL_CONTACTS } from "./store/contact-context";
 import * as actionTypes from "./store/actions/index";
+import NotFound from "./pages/NotFound/NotFound";
 
 const App = () => {
   const [contacts, setContacts] = useState(INITIAL_CONTACTS);
@@ -56,6 +57,9 @@ const App = () => {
             </Route>
             <Route path="/contacts">
               <ContactList></ContactList>
+            </Route>
+            <Route path="*">
+              <NotFound />
             </Route>
           </Switch>
         </Layout>
