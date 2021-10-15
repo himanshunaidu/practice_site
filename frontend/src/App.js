@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Route, Redirect, Switch } from "react-router-dom";
 
 import "./App.css";
+import Layout from "./components/Layout/Layout/Layout";
 import ContactList from "./pages/ContactList/ContactList";
 import Connect from "./pages/Connect/Connect";
 import ContactContext from "./store/contact-context";
@@ -45,17 +46,19 @@ const App = () => {
       <ContactContext.Provider
         value={{ contacts: contacts, changeContacts: changeContacts }}
       >
-        <Switch>
-          <Route path="/" exact>
-            <Redirect to="/connect"></Redirect>
-          </Route>
-          <Route path="/connect">
-            <Connect></Connect>
-          </Route>
-          <Route path="/contacts">
-            <ContactList></ContactList>
-          </Route>
-        </Switch>
+        <Layout>
+          <Switch>
+            <Route path="/" exact>
+              <Redirect to="/connect"></Redirect>
+            </Route>
+            <Route path="/connect">
+              <Connect></Connect>
+            </Route>
+            <Route path="/contacts">
+              <ContactList></ContactList>
+            </Route>
+          </Switch>
+        </Layout>
       </ContactContext.Provider>
     </div>
   );
