@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useReducer, useCallback } from "react";
-import ConnectMessage from "../../../models/Connect/connect";
+import { Prompt } from "react-router-dom";
 
+import ConnectMessage from "../../../models/Connect/connect";
 import ErrorModal from "../../UI/ErrorModal/ErrorModal";
 import Button from "../../UI/Button/Button";
 import styles from "./ConnectForm.module.css";
@@ -53,6 +54,7 @@ const mobileReducer = (state, action) => {
 
 const ConnectForm = (props) => {
   //State Variables
+  const [isFocused, setIsFocused] = useState(false);
 
   //useReducer in this case
   // const [title, setTitle] = useState("");
@@ -100,6 +102,7 @@ const ConnectForm = (props) => {
       dispatchName({ type: inputActions.default });
       dispatchMobile({ type: inputActions.default });
       setMessage("");
+      setIsFocused(false);
     } else {
       //Since we have now added useEffect validation that disables the button, this is just a fail-safe now
       setErrorState({
@@ -110,12 +113,22 @@ const ConnectForm = (props) => {
     }
   };
 
+  const formFocusHandler = (event) => {
+    setIsFocused(true);
+  };
+
   const errorConfirmHandler = (event) => {
     setErrorState(initialErrorState);
   };
 
   return (
     <React.Fragment>
+      <Prompt
+        when={isFocused}
+        message={(location) =>
+          "Form has changed. Are you sure you want to leave?"
+        }
+      />
       {errorState.show ? (
         <ErrorModal
           title={errorState.title}
@@ -123,7 +136,7 @@ const ConnectForm = (props) => {
           onConfirm={errorConfirmHandler}
         ></ErrorModal>
       ) : null}
-      <form onSubmit={formSubmitHandler}>
+      <form onSubmit={formSubmitHandler} onFocus={formFocusHandler}>
         <div className={styles.connect__controls}>
           <div className={styles.connect__control}>
             <label>Title</label>
