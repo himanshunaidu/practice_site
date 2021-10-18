@@ -139,8 +139,9 @@ const ConnectForm = (props) => {
       <form onSubmit={formSubmitHandler} onFocus={formFocusHandler}>
         <div className={styles.connect__controls}>
           <div className={styles.connect__control}>
-            <label>Title</label>
+            <label htmlFor="title">Title</label>
             <input
+              id="title"
               className={
                 !titleState.isValid && titleState.isTouched
                   ? styles.invalid
@@ -157,8 +158,9 @@ const ConnectForm = (props) => {
             />
           </div>
           <div className={styles.connect__control}>
-            <label>Name</label>
+            <label htmlFor="name">Name</label>
             <input
+              id="name"
               className={
                 !nameState.isValid && nameState.isTouched ? styles.invalid : ""
               }
@@ -173,8 +175,9 @@ const ConnectForm = (props) => {
             />
           </div>
           <div className={styles.connect__control}>
-            <label>Mobile</label>
+            <label htmlFor="mobile">Mobile</label>
             <input
+              id="mobile"
               className={
                 !mobileState.isValid && mobileState.isTouched
                   ? styles.invalid
@@ -191,9 +194,10 @@ const ConnectForm = (props) => {
             />
           </div>
           <div className={styles.connect__control}>
-            <label>Message</label>
+            <label htmlFor="message">Message</label>
             <textarea
               // className={messageValid ? "" : styles.invalid}
+              id="message"
               value={message}
               rows={4}
               cols={50}
